@@ -8,7 +8,7 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "consumer-test", topic = "sss-topic")
+@RocketMQMessageListener(consumerGroup = "consumer-test", topic = "test-topic")
 @Service
 public class RocketMqTestListener implements RocketMQListener<TestDto> {
 
