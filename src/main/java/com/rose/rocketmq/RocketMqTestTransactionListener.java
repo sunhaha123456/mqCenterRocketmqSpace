@@ -20,18 +20,20 @@ public class RocketMqTestTransactionListener implements RocketMQLocalTransaction
         MessageHeaders headers = msg.getHeaders();
         String transactionId = (String) headers.get(RocketMQHeaders.TRANSACTION_ID);
         Long recordId = Long.valueOf(headers.get("recordId") + "");
+        TestDto transactionDto = (TestDto) arg; // 获取arg
 
         try {
-            // 执行本地事务，具体是：调一个serverice的方法，记住，service上要写@Transaction事务注解
-            TestDto transactionDto = (TestDto) arg; // 获取要执行的事务对象
-
-            // 本地事务需要记录一条是否执行事务成功标志
-
-            log.info("执行本地事务成功！");
-            return RocketMQLocalTransactionState.COMMIT;    // xxx
+            // 如果本地事务执行成功
+            if (true) {
+                log.info("执行本地事务成功，提交消息！");
+                return RocketMQLocalTransactionState.COMMIT;
+            } else {
+                log.info("执行本地事务失败，回滚消息！");
+                return RocketMQLocalTransactionState.ROLLBACK;
+            }
         } catch (Exception e) {
-            log.info("执行本地事务失败！");
-            return RocketMQLocalTransactionState.ROLLBACK;
+            log.info("异常！报错信息：{}", e);
+            return RocketMQLocalTransactionState.UNKNOWN;
         }
     }
 
